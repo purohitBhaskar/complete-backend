@@ -7,6 +7,23 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET 
   });
 
-cloudinary.uploader.upload("https://upload.wikimedia.org/wikipedia/commons/a/ae/Olympic_flag.jpg",
-  { public_id: "olympic_flag" }, 
-  function(error, result) {console.log(result); });
+const uploadOnCloudinary = async (localFilePath)=>{
+    try{
+        if(!localFilePath){
+            return null
+        }else{
+            const responseCloudinary = await cloudinary.uploader.upload(localFilePath, {
+                resource_type:"auto"
+
+            })
+            console.log('uploaded successfully');
+            console.log(responseCloudinary.url);
+            return responseCloudinary
+        }
+    }catch(error){
+        fs.unlinkSync(localFilePath)  //removes the locally saved temporary file as the upload operation got failed
+        return null
+    }
+}
+
+export {uploadOnCloudinary}
