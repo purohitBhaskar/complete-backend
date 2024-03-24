@@ -22,6 +22,10 @@ app.use(express.static("public"))
 app.use(express.cookieParser())
 
 
-app.listen(process.env.PORT, ()=>{
-    console.log('app is listening at port ', process.env.PORT);
-})
+//routes
+import userRouter from './routes/user.routes'
+
+//routes declaration
+app.use('/users', userRouter)
+
+export {app}
